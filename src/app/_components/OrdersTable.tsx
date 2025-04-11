@@ -1,8 +1,9 @@
 "use client";
-import { Funnel, Circle } from "lucide-react"; 
-import { useState, useMemo } from "react";
-import { api } from "~/trpc/react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { Funnel } from "lucide-react"; 
 import { flexRender, useReactTable, createColumnHelper, getCoreRowModel } from '@tanstack/react-table';
+import { debounce } from "lodash";
+import { api } from "~/trpc/react";
 import {
   Table,
   TableBody,
@@ -78,16 +79,41 @@ const columns = [
 export function OrdersTable() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(""); 
   const [filterStatus, setFilterStatus] = useState<"PENDING" | "FULFILLED" | "CANCELLED" | "SHIPPED" | "RETURNED" | undefined>(undefined);
 
   const limit = 10;
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // debounce search input
+  const debouncedSetSearch = useMemo(() => debounce((val: string) => {
+    setDebouncedSearch(val);
+    setPage(1);
+  }, 2000), []);
+
+  useEffect(() => {
+    debouncedSetSearch(search);
+
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [search]);
+
   const { data, isLoading } = api.orders.list.useQuery({
     page,
     limit,
     status: filterStatus,
-    search,
+    search: debouncedSearch,
   });
 
+  // Autofocus logic on page load
+  useEffect(() => {
+    // Focus if there’s a value in the search field
+    if (inputRef.current && search) {
+      inputRef.current.focus(); 
+    }
+  }, [data]);
+  
   const table = useReactTable({
     data: data?.orders || [],
     columns,
@@ -107,10 +133,8 @@ export function OrdersTable() {
           type="text"
           placeholder="Search customer"
           value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1); // Reset to page 1 when search changes
-          }}
+          onChange={(e) => setSearch(e.target.value)}
+          ref={inputRef}
         />
         
         
