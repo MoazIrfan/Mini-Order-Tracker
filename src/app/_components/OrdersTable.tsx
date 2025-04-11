@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 
+import { Loader } from "~/components/ui/loader"
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 
@@ -39,7 +40,7 @@ const statusColor = {
   FULFILLED: "bg-green-500",
   CANCELLED: "bg-red-500",
   SHIPPED: "bg-blue-500",
-  RETURNED: "bg-purple-500",
+  RETURNED: "bg-fuchsia-400",
 } as const;
 
 const columnHelper = createColumnHelper<OrderType>();
@@ -71,7 +72,18 @@ const columns = [
   }),
   columnHelper.accessor('orderLineItems', {
     header: 'Products Ordered',
-    cell: (info) => info.getValue().map(item => item.product.name).join(', '),
+    cell: (info) => (
+    <div className="flex flex-wrap gap-2">
+      {info.getValue().map((item, index) => (
+        <span
+          key={index}
+          className="product-item"
+        >
+          {item.product.name}
+        </span>
+      ))}
+    </div>
+  ),
   }),
 ];
 
@@ -120,7 +132,7 @@ export function OrdersTable() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
   
   return (
     <div className="space-y-4 table-wrapper">

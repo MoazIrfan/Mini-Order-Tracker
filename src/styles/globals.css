@@ -168,4 +168,11 @@
     outline: none !important;
     box-shadow: none !important;
   }
+  .product-item {
+    border: 1px solid var(--cyber);
+    color: var(--cyber) !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.3rem;
+    font-size: 0.75rem;
+  }
 }
