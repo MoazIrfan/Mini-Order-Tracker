@@ -80,7 +80,7 @@ export function OrdersTable() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<"PENDING" | "FULFILLED" | "CANCELLED" | "SHIPPED" | "RETURNED" | undefined>(undefined);
 
-  const limit = 1;
+  const limit = 10;
   const { data, isLoading } = api.orders.list.useQuery({
     page,
     limit,

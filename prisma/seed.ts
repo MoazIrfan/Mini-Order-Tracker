@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { faker } from '@faker-js/faker'; // Make sure you install it: npm i @faker-js/faker
 
 const prisma = new PrismaClient();
 
@@ -14,48 +15,50 @@ async function main() {
   });
 
   // Create Customers
-  const customer1 = await prisma.customer.create({
-    data: {
-      name: "John Doe",
-      address: "123 Elm Street, Springfield",
-    },
-  });
-
-  const customer2 = await prisma.customer.create({
-    data: {
-      name: "Jane Smith",
-      address: "456 Oak Avenue, Shelbyville",
-    },
-  });
-
-  // Create Orders with Line Items
-  await prisma.order.create({
-    data: {
-      customerId: customer1.id,
-      fulfillmentStatus: "PENDING",
-      orderLineItems: {
-        create: [
-          { productId: 1, quantity: 2 }, // 2 T-Shirts
-          { productId: 3, quantity: 1 }, // 1 Coffee Mug
-        ],
+  const customers = [];
+  for (let i = 0; i < 23; i++) {
+    const customer = await prisma.customer.create({
+      data: {
+        name: faker.person.fullName(),
+        address: faker.location.streetAddress({ useFullAddress: true }),
       },
-    },
-  });
+    });
+    customers.push(customer);
+  }
 
-  await prisma.order.create({
-    data: {
-      customerId: customer2.id,
-      fulfillmentStatus: "FULFILLED",
-      orderLineItems: {
-        create: [
-          { productId: 2, quantity: 1 }, // 1 Laptop
-          { productId: 4, quantity: 3 }, // 3 Notebooks
-        ],
-      },
-    },
-  });
+  // Create random Orders for Customers
+  for (const customer of customers) {
+    const numberOfOrders = faker.number.int({ min: 1, max: 3 });
 
-  console.log("🌱 Seeding completed!");
+    for (let i = 0; i < numberOfOrders; i++) {
+      await prisma.order.create({
+        data: {
+          customerId: customer.id,
+          fulfillmentStatus: faker.helpers.arrayElement([
+            "PENDING",
+            "FULFILLED",
+            "CANCELLED",
+            "SHIPPED",
+            "RETURNED",
+          ]),
+          orderLineItems: {
+            create: [
+              {
+                productId: faker.number.int({ min: 1, max: 4 }),
+                quantity: faker.number.int({ min: 1, max: 5 }),
+              },
+              {
+                productId: faker.number.int({ min: 1, max: 4 }),
+                quantity: faker.number.int({ min: 1, max: 5 }),
+              },
+            ],
+          },
+        },
+      });
+    }
+  }
+
+  console.log("🌱 Seeding completed with random data!");
 }
 
 main()
