@@ -4,6 +4,7 @@ import { Funnel } from "lucide-react";
 import { flexRender, useReactTable, createColumnHelper, getCoreRowModel } from '@tanstack/react-table';
 import { debounce } from "lodash";
 import { api } from "~/trpc/react";
+import type { OrderType } from "~/types/order";
 import {
   Table,
   TableBody,
@@ -25,15 +26,6 @@ import { Loader } from "~/components/ui/loader"
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 
-
-type OrderType = {
-  customer: {
-    name: string;
-    address: string;
-  };
-  fulfillmentStatus: string;
-  orderLineItems: { product: { name: string } }[];
-};
 
 const statusColor = {
   PENDING: "bg-yellow-500",
@@ -87,7 +79,6 @@ const columns = [
   }),
 ];
 
-
 export function OrdersTable() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -118,7 +109,7 @@ export function OrdersTable() {
     search: debouncedSearch,
   });
 
-  // Autofocus logic on page load
+  // Autofocus on page load
   useEffect(() => {
     // Focus if there’s a value in the search field
     if (inputRef.current && search) {
@@ -148,7 +139,6 @@ export function OrdersTable() {
           onChange={(e) => setSearch(e.target.value)}
           ref={inputRef}
         />
-        
         
         {/* Filter */}
         <Select
@@ -208,7 +198,7 @@ export function OrdersTable() {
         <Button
           disabled={page === 1}
           onClick={() => setPage((prev) => prev - 1)}
-          className="px-4 py-2  rounded disabled:opacity-50"
+          className="pagination-button"
         >
           Previous
         </Button>
@@ -220,7 +210,7 @@ export function OrdersTable() {
         <Button
           disabled={page === data?.totalPages}
           onClick={() => setPage((prev) => prev + 1)}
-          className="px-4 py-2  rounded disabled:opacity-50"
+          className="pagination-button"
         >
           Next
         </Button>

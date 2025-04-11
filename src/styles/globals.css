@@ -169,10 +169,22 @@
     box-shadow: none !important;
   }
   .product-item {
+    background: var(--cyber);
     border: 1px solid var(--cyber);
-    color: var(--cyber) !important;
     padding: 0.25rem 0.5rem;
     border-radius: 0.3rem;
     font-size: 0.75rem;
+  }
+  .pagination-button {
+    cursor: pointer;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .pagination-button:disabled {
+    opacity: 0.5;
   }
 }
