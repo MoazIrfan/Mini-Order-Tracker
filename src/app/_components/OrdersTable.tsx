@@ -35,10 +35,10 @@ type OrderType = {
 
 const statusColor = {
   PENDING: "bg-yellow-500",
-    FULFILLED: "bg-green-500",
-    CANCELLED: "bg-red-500",
-    SHIPPED: "bg-blue-500",
-    RETURNED: "bg-purple-500",
+  FULFILLED: "bg-green-500",
+  CANCELLED: "bg-red-500",
+  SHIPPED: "bg-blue-500",
+  RETURNED: "bg-purple-500",
 } as const;
 
 const columnHelper = createColumnHelper<OrderType>();
@@ -80,7 +80,7 @@ export function OrdersTable() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<"PENDING" | "FULFILLED" | "CANCELLED" | "SHIPPED" | "RETURNED" | undefined>(undefined);
 
-  const limit = 10;
+  const limit = 1;
   const { data, isLoading } = api.orders.list.useQuery({
     page,
     limit,
@@ -97,12 +97,13 @@ export function OrdersTable() {
   if (isLoading) return <p>Loading...</p>;
   
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold mb-4">Fulfillment Orders</h1>
+    <div className="space-y-4 table-wrapper">
+      <h1 className="text-2xl font-bold mb-4">Orders List</h1>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between">
         {/* Search Field */}
         <Input
+          className="custom-input"
           type="text"
           placeholder="Search customer"
           value={search}
@@ -110,8 +111,8 @@ export function OrdersTable() {
             setSearch(e.target.value);
             setPage(1); // Reset to page 1 when search changes
           }}
-          className="w-[300px]"
         />
+        
         
         {/* Filter */}
         <Select
@@ -121,7 +122,7 @@ export function OrdersTable() {
             setPage(1); // reset to first page when filter changes
           }}
         >
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="custom-select">
             <Funnel className="h-4 w-4 text-muted-foreground" />
             <SelectValue placeholder="Filter" />
           </SelectTrigger>
@@ -137,7 +138,7 @@ export function OrdersTable() {
       </div>
 
       {/* Table */}
-      <Table>
+      <Table className="custom-table">
         {/* Table Header */}
         <TableHeader>
           {table.getHeaderGroups().map(headerGroup => (
@@ -176,7 +177,7 @@ export function OrdersTable() {
           Previous
         </Button>
 
-        <span className="text-sm">
+        <span className="text-sm text-cyber">
           Page {page} of {data?.totalPages}
         </span>
 
