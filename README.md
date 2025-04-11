@@ -62,8 +62,6 @@ npm run seed
 ### 4. Run Development Server
 
 ```bash
-npx prisma db push
-
 npm run dev
 ````
 
