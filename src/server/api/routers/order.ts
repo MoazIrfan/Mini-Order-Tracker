@@ -26,6 +26,9 @@ export const ordersRouter = createTRPCRouter({
         },
       });
 
-      return { orders };
+      const totalOrders = await ctx.db.order.count();
+      const totalPages = Math.ceil(totalOrders / limit);
+
+      return { orders, totalOrders, totalPages };
     }),
 });

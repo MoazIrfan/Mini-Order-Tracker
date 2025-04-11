@@ -53,10 +53,7 @@ const columns = [
 
       return (
         <div className="flex items-center gap-2">
-          {/* <Circle className={`h-3 w-3 ${statusColor[status as keyof typeof statusColor]}`} /> */}
-          <div
-        className={`h-3 w-3 rounded-full shrink-0 ${statusColor[status as keyof typeof statusColor] || "bg-gray-400"}`}
-      />
+          <div className={`h-3 w-3 rounded-full shrink-0 ${statusColor[status as keyof typeof statusColor] || "bg-gray-400"}`} />
           <span>{displayStatus}</span>
         </div>
       );
@@ -119,6 +116,29 @@ export function OrdersTable() {
           ))}
         </TableBody>
       </Table>
+
+       {/* Pagination Controls */}
+      <div className="flex justify-between items-center mt-4">
+        <Button
+          disabled={page === 1}
+          onClick={() => setPage((prev) => prev - 1)}
+          className="px-4 py-2  rounded disabled:opacity-50"
+        >
+          Previous
+        </Button>
+
+        <span className="text-sm">
+          Page {page} of {data?.totalPages}
+        </span>
+
+        <Button
+          disabled={page === data?.totalPages}
+          onClick={() => setPage((prev) => prev + 1)}
+          className="px-4 py-2  rounded disabled:opacity-50"
+        >
+          Next
+        </Button>
+      </div>
 
     </div>
   );
