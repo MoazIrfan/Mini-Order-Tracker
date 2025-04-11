@@ -12,6 +12,15 @@ import {
   TableRow,
 } from "~/components/ui/table";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+
+import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 
 
@@ -68,11 +77,15 @@ const columns = [
 
 export function OrdersTable() {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState<"PENDING" | "FULFILLED" | "CANCELLED" | "SHIPPED" | "RETURNED" | undefined>(undefined);
 
   const limit = 10;
   const { data, isLoading } = api.orders.list.useQuery({
     page,
     limit,
+    status: filterStatus,
+    search,
   });
 
   const table = useReactTable({
@@ -86,6 +99,42 @@ export function OrdersTable() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold mb-4">Fulfillment Orders</h1>
+
+      <div className="flex items-center gap-4">
+        {/* Search Field */}
+        <Input
+          type="text"
+          placeholder="Search customer"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1); // Reset to page 1 when search changes
+          }}
+          className="w-[300px]"
+        />
+        
+        {/* Filter */}
+        <Select
+          value={filterStatus}
+          onValueChange={(value) => {
+            setFilterStatus(value === "all" ? undefined : value as "PENDING" | "FULFILLED" | "CANCELLED" | "SHIPPED" | "RETURNED");
+            setPage(1); // reset to first page when filter changes
+          }}
+        >
+          <SelectTrigger className="w-[200px]">
+            <Funnel className="h-4 w-4 text-muted-foreground" />
+            <SelectValue placeholder="Filter" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="PENDING">Pending</SelectItem>
+            <SelectItem value="SHIPPED">Shipped</SelectItem>
+            <SelectItem value="FULFILLED">Fulfilled</SelectItem>
+            <SelectItem value="CANCELLED">Cancelled</SelectItem>
+            <SelectItem value="RETURNED">Returned</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
       {/* Table */}
       <Table>
@@ -117,7 +166,7 @@ export function OrdersTable() {
         </TableBody>
       </Table>
 
-       {/* Pagination Controls */}
+      {/* Pagination Controls */}
       <div className="flex justify-between items-center mt-4">
         <Button
           disabled={page === 1}
@@ -139,7 +188,7 @@ export function OrdersTable() {
           Next
         </Button>
       </div>
-
+  
     </div>
   );
 }
