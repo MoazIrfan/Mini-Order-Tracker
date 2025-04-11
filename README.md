@@ -1,29 +1,133 @@
-# Create T3 App
+# 🛒 Order Status Tracker
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+An end-to-end **Order Status Tracker**.
 
-## What's next? How do I make an app with this?
+Focuses on type safety, scalable architecture, and seamless developer experience.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+---
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+[![⚙️](https://github.com/MoazIrfan/wc-cli/raw/main/.github/usage.png)](./../../)
+## Tech Stack
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+> Bootstrapped with [**Create T3 App**](https://create.t3.gg/) — the full-stack typesafe framework.
 
-## Learn More
+- **Frontend**
+  - [Next.js](https://nextjs.org/) (App Router)
+  - [React Table (TanStack Table v8)](https://tanstack.com/table/v8) — powerful, headless tables
+  - [shadcn/ui](https://ui.shadcn.dev/) — customizable UI components
+  - [Tailwind CSS](https://tailwindcss.com/) — utility-first CSS framework
+  - [Lucide-react](https://lucide.dev/) — icon library
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- **Backend**
+  - [tRPC](https://trpc.io/) — end-to-end type-safe APIs
+  - [Prisma ORM](https://www.prisma.io/) — database access toolkit
+  - [Zod](https://zod.dev/) — runtime schema validation
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- **Database**
+  - [PostgreSQL](https://www.postgresql.org/) — production-ready relational database
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- **Utilities**
+  - [TypeScript](https://www.typescriptlang.org/) — static typing
+  - [ESLint + Prettier](https://eslint.org/) — linting and formatting
 
-## How do I deploy this?
+---
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+[![📟](https://github.com/MoazIrfan/wc-cli/raw/main/.github/install.png)](./../../)
+## Install
+
+Follow these steps to run the project locally:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/MoazIrfan/cybership-assesment.git
+
+cd cybership-assesment
+````
+
+### 2. Install Dependencies
+
+```bash
+npm install
+````
+
+### 3. Push Prisma Schema and Seed Database
+
+```bash
+npx prisma db push
+
+npm run seed
+````
+
+### 4. Run Development Server
+
+```bash
+npx prisma db push
+
+npm run dev
+````
+
+your app will be running at http://localhost:3000
+
+---
+
+
+## ✨ Features
+
+- 📋 **React Table (TanStack v8)** for flexible table handling.
+
+- 🔍 **Server-side Search** by Customer Name.
+
+- 🔎 **Server-side Filter** by Fulfillment Status.
+
+- 🔄 **Server-side Pagination** Data in small chunks.
+
+- 🎨 **Status with Color Tag** for easy visual cues (Pending, Fulfilled, Cancelled, etc).
+
+- ⚡ **Optimized API Calls** via tRPC.
+
+- 📊 **shadcn/ui** for consistent, accessible components.
+
+- 🛠️ **Prisma ORM** for smooth database queries.
+
+- 🛡️ **Strict Type Safety** from DB to UI.
+
+- 🚀 **modern** UI.
+---
+
+
+## 🧪 Project Structure
+
+```bash
+/
+├── src/
+│   ├── app/
+│   │   ├── _components/
+│   │   │   └── OrdersTable.tsx
+│   │   ├── api/
+│   │   │   └── trpc/
+│   │   │       └── routes
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── button.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── loader.tsx
+│   │   │   ├── select.tsx
+│   │   │   └── table.tsx
+│   ├── lib/
+│   ├── prisma/
+│   ├── server/
+│   │   └── (trpc backend logic)
+│   ├── styles/
+│   └── utils/
+├── prisma/
+│   └── schema.prisma
+├── public/
+├── .env
+├── package.json
+├── README.md
+└── next.config.mjs
+
+```
