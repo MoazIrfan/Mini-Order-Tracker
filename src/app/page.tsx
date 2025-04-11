@@ -12,10 +12,9 @@ export default async function Home() {
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">
             Order <span className="text-[hsl(280,100%,70%)]">Tracker</span>
           </h1>
-          
-          
 
           <OrdersTable />
+          
         </div>
       </main>
     </HydrateClient>
