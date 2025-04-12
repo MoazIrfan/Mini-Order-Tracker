@@ -4,7 +4,7 @@ An end-to-end **Order Status Tracker**.
 
 Focuses on type safety, scalable architecture, and seamless developer experience.
 
-[![📟](https://raw.githubusercontent.com/MoazIrfan/wc-cli/main/.github/order-tracker.gif)](./../../)
+[![📟](https://raw.githubusercontent.com/MoazIrfan/wc-cli/main/.github/ordertracker.gif)](./../../)
 
 ## Demo
 https://www.loom.com/share/c9886124ec344654a252a23992346f00?sid=a083f674-e351-4964-9ea3-12660700f3c7
