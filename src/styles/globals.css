@@ -152,6 +152,9 @@
   .custom-table th {
     color: var(--cyber) !important;
   }
+  .custom-table-header tr:hover {
+    background-color: #18181a !important;
+  }
   .custom-input {
     width: 400px !important;
   }

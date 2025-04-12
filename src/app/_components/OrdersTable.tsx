@@ -1,7 +1,8 @@
 "use client";
 import { useState, useMemo, useEffect, useRef } from "react";
-import { Funnel } from "lucide-react"; 
-import { flexRender, useReactTable, createColumnHelper, getCoreRowModel } from '@tanstack/react-table';
+import { Funnel, ArrowUpDown } from "lucide-react"; 
+import { flexRender, useReactTable, createColumnHelper, getCoreRowModel, getSortedRowModel } from '@tanstack/react-table';
+import type { SortingState } from '@tanstack/react-table';
 import { debounce } from "lodash";
 import { api } from "~/trpc/react";
 import type { OrderType } from "~/types/order";
@@ -39,7 +40,17 @@ const columnHelper = createColumnHelper<OrderType>();
 
 const columns = [
   columnHelper.accessor('customer.name', {
-    header: 'Customer Name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Customer Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: info => info.getValue(),
   }),
   columnHelper.accessor('customer.address', {
@@ -84,6 +95,7 @@ export function OrdersTable() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(""); 
   const [filterStatus, setFilterStatus] = useState<"PENDING" | "FULFILLED" | "CANCELLED" | "SHIPPED" | "RETURNED" | undefined>(undefined);
+  const [sorting, setSorting] = useState<SortingState>([])
 
   const limit = 10;
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -121,6 +133,11 @@ export function OrdersTable() {
     data: data?.orders || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
   });
 
   if (isLoading) return <Loader />;
@@ -166,7 +183,7 @@ export function OrdersTable() {
       {/* Table */}
       <Table className="custom-table">
         {/* Table Header */}
-        <TableHeader>
+        <TableHeader className="custom-table-header">
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id} >
               {headerGroup.headers.map(header => (
@@ -181,15 +198,23 @@ export function OrdersTable() {
         </TableHeader>
         {/* Table Body */}
         <TableBody>
-          {table.getRowModel().rows.map(row => (
-            <TableRow key={row.id} >
-              {row.getVisibleCells().map(cell => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
+          {table.getRowModel().rows.length ? (
+            table.getRowModel().rows.map(row => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map(cell => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="text-center">
+                No orders found.
+              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
 
