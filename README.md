@@ -2,7 +2,7 @@
 
 An end-to-end **Order Status Tracker**.
 
-Focuses on type safety, scalable architecture, and seamless developer experience.
+type-safe, scalable, and developer-friendly
 
 [![📟](https://raw.githubusercontent.com/MoazIrfan/wc-cli/main/.github/ordertracker.gif)](./../../)
 
