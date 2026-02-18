@@ -1,6 +1,6 @@
 # 🛒 Order Status Tracker
 
-An end-to-end **Order Status Tracker**.
+An **end-to-end** Order Status Tracker.
 
 type-safe, scalable, and developer-friendly
 
